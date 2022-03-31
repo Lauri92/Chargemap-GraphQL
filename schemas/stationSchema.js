@@ -18,5 +18,6 @@ export default gql`
     StateOrProvince: String
     Postcode: String
     Location: Location
+    Connections: Connections
   }
 `;
