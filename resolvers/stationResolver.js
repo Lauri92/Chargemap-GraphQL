@@ -5,5 +5,8 @@ export default {
     stations: async (parent, args) => {
       return stationModel.find();
     },
+    station: async (parent, args) => {
+      return stationModel.findById(args.id);
+    },
   },
 };
