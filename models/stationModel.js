@@ -1,7 +1,7 @@
 'use strict';
 
 import mongoose from 'mongoose';
-import connections from './connections.js';
+import connection from './connection.js';
 
 const Schema = mongoose.Schema;
 
@@ -22,7 +22,7 @@ const stationSchema = new Schema({
       required: true,
     },
   },
-  Connections: [{type: Schema.Types.ObjectId, ref: connections}],
+  Connections: [{type: Schema.Types.ObjectId, ref: connection}],
 });
 stationSchema.index({Location: '2dsphere'});
 
