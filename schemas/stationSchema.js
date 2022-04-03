@@ -36,6 +36,7 @@ export default gql`
 
   input PointObjectInput {
     coordinates: [Float]
+    type: String
   }
 
   input Bounds {

@@ -24,14 +24,11 @@ export default {
       // save the connections first
       const conns = await Promise.all(
           args.Connections.map(async (conn) => {
-            const newConnection = new Connection(args);
-            const result = await newConnection.save();
-            return result._id;
+            const newConnection = await Connection.create(conn);
+            return newConnection._id;
           }),
       );
-
-      const newStation = new Station({...args, Connections: conns});
-      return newStation.save();
+      return await Station.create({...args, Connections: conns});
     },
   },
 };
