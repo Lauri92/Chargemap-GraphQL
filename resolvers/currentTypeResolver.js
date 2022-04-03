@@ -1,4 +1,4 @@
-import currentType from '../models/currentType';
+import currentType from '../models/currentType.js';
 
 export default {
   Query: {
@@ -6,7 +6,7 @@ export default {
   },
   Connection: {
     CurrentTypeID: async (parent, args) => {
-      console.log('CurrentTypeID', parent.CurrentTypeID);
+      //console.log('CurrentTypeID', parent.CurrentTypeID);
       return currentType.findById(parent.CurrentTypeID);
     },
   },

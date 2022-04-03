@@ -6,7 +6,7 @@ export default {
   },
   Connection: {
     LevelID: async (parent, args) => {
-      console.log('LevelID', parent.LevelID);
+      //console.log('LevelID', parent.LevelID);
       return levelType.findById(parent.LevelID);
     },
   },

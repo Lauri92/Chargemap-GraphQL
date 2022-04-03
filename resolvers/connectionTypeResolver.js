@@ -6,7 +6,7 @@ export default {
   },
   Connection: {
     ConnectionTypeID: async (parent, args) => {
-      console.log('ConnectionTypeID', parent.ConnectionTypeID);
+      //console.log('ConnectionTypeID', parent.ConnectionTypeID);
       return connectionType.findById(parent.ConnectionTypeID);
     },
   },
