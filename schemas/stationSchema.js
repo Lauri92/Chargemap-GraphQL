@@ -2,6 +2,7 @@ import {gql} from 'apollo-server-express';
 
 export default gql`
   extend type Query {
+    station(id: ID): Station
     stations(start: Int, limit: Int, bounds: Bounds): [Station]
   }
 

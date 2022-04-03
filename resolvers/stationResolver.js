@@ -15,6 +15,9 @@ export default {
           )
           : stations;
     },
+    station: async (parent, args) => {
+      return Station.findById(args.id);
+    },
   },
   Mutation: {
     addStation: async (parent, args) => {
