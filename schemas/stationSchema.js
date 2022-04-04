@@ -27,6 +27,11 @@ export default gql`
     Postcode: String
     Location: PointObjectInput
     ): Station
+    
+    deleteStation(
+    id: ID!
+    Connections: [ConnectionInput]
+    ): Station
   }
 
   type Station {

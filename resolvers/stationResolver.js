@@ -43,7 +43,6 @@ export default {
       }
 
       //Modify the station
-      console.log(args);
       return Station.findOneAndUpdate({_id: args.id},
           {
             Title: args.Title,
@@ -52,6 +51,16 @@ export default {
             StateOrProvince: args.StateOrProvince,
             Postcode: args.Postcode,
           }, {new: true});
+    },
+
+    deleteStation: async (parent, args) => {
+      // Delete associated connections first
+      for (const connection of args.Connections) {
+        await Connection.findOneAndDelete({_id: connection.id});
+      }
+      // Delete the station
+      return Station.findOneAndDelete({_id: args.id});
+
     },
   },
 };
