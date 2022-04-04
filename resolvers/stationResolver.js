@@ -30,6 +30,29 @@ export default {
       );
       return await Station.create({...args, Connections: conns});
     },
+
+    modifyStation: async (parent, args) => {
+      // First modify the connections
+      for (const connection of args.Connections) {
+        await Connection.findOneAndUpdate({_id: connection.id},
+            {
+              ConnectionTypeID: connection.ConnectionTypeID,
+              LevelID: connection.LevelID,
+              CurrentTypeID: connection.CurrentTypeID,
+            });
+      }
+
+      //Modify the station
+      console.log(args);
+      return Station.findOneAndUpdate({_id: args.id},
+          {
+            Title: args.Title,
+            AddressLine1: args.AddressLine1,
+            Town: args.Town,
+            StateOrProvince: args.StateOrProvince,
+            Postcode: args.Postcode,
+          }, {new: true});
+    },
   },
 };
 
