@@ -4,6 +4,8 @@ import Strategy from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 import User from '../models/userModel.js';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+dotenv.config()
 
 passport.use(
     new Strategy(async (username, password, done) => {
@@ -30,7 +32,7 @@ passport.use(
     new JWTStrategy(
         {
           jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-          secretOrKey: 'abc',
+          secretOrKey: process.env.JWT_SECRET_OR_KEY,
         },
         (payload, done) => {
           // console.log('jwt payload', payload);
