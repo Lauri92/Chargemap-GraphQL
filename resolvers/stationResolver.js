@@ -25,7 +25,7 @@ export default {
       //console.log(context);
       // save the connections first
       if (!context.user) {
-        throw new AuthenticationError('Not authroized');
+        throw new AuthenticationError('Not authorized');
       }
       const conns = await Promise.all(
           args.Connections.map(async (conn) => {
@@ -36,7 +36,10 @@ export default {
       return await Station.create({...args, Connections: conns});
     },
 
-    modifyStation: async (parent, args) => {
+    modifyStation: async (parent, args, context) => {
+      if (!context.user) {
+        throw new AuthenticationError('Not authorized');
+      }
       // First modify the connections
       for (const connection of args.Connections) {
         await Connection.findOneAndUpdate({_id: connection.id},
@@ -58,14 +61,16 @@ export default {
           }, {new: true});
     },
 
-    deleteStation: async (parent, args) => {
+    deleteStation: async (parent, args, context) => {
+      if (!context.user) {
+        throw new AuthenticationError('Not authorized');
+      }
       // Delete associated connections first
       for (const connection of args.Connections) {
         await Connection.findOneAndDelete({_id: connection.id});
       }
       // Delete the station
       return Station.findOneAndDelete({_id: args.id});
-
     },
   },
 };
