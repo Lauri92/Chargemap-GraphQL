@@ -1,6 +1,7 @@
 import Station from '../models/stationModel.js';
 import Connection from '../models/connection.js';
 import {rectangleBounds} from '../utils/rectangleBounds.js';
+import {AuthenticationError} from 'apollo-server-express';
 
 export default {
   Query: {
@@ -20,8 +21,12 @@ export default {
     },
   },
   Mutation: {
-    addStation: async (parent, args) => {
+    addStation: async (parent, args, context) => {
+      //console.log(context);
       // save the connections first
+      if (!context.user) {
+        throw new AuthenticationError('Not authroized');
+      }
       const conns = await Promise.all(
           args.Connections.map(async (conn) => {
             const newConnection = await Connection.create(conn);
