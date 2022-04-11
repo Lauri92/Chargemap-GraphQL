@@ -5,19 +5,13 @@ import resolvers from './resolvers/index.js';
 import dotenv from 'dotenv';
 import connectMongo from './db/db.js';
 import {checkAuth} from './utils/auth.js';
+import helmet from 'helmet';
 
 dotenv.config();
+const port = process.env.PORT || 3000;
 
 (async () => {
   try {
-
-    const conn = await connectMongo();
-    if (conn) {
-      console.log('Connected successfully.');
-    } else {
-      throw new Error('db not connected');
-    }
-
     const server = new ApolloServer({
       typeDefs,
       resolvers,
@@ -34,11 +28,29 @@ dotenv.config();
     await server.start();
 
     server.applyMiddleware({app});
+    app.use(helmet({}));
 
-    app.listen({port: process.env.PORT || 3000}, () =>
-        console.log(
-            `🚀 Server ready at http://localhost:3000${server.graphqlPath}`),
-    );
+    app.get('/', async (req, res) => {
+      if (req.secure) {
+        res.send('Hello secure chargemap');
+      } else {
+        res.send('Not secure chargemap');
+      }
+    });
+
+    const conn = await connectMongo();
+    if (conn) {
+      console.log('Connected successfully.');
+      if (process.env.NODE_ENV === 'production') {
+        await (async () => (await import('./utils/production.js')).default(app,
+            port))();
+      } else {
+        await (async () => (await import('./utils/localhost.js')).default(app,
+            port))();
+      }
+    } else {
+      throw new Error('db not connected');
+    }
   } catch (e) {
     console.log('server error: ' + e.message);
   }
